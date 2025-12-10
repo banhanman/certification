@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Аттестация сотрудников | АБ Сервис</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        .aurora-bg {
+            background: linear-gradient(135deg, #0a0a0f 0%, #0d0d1a 100%);
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .aurora-bg::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(120, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(255, 0, 150, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(0, 150, 255, 0.15) 0%, transparent 50%);
+            animation: auroraMove 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes auroraMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2%, 2%) rotate(5deg); }
+            50% { transform: translate(-1%, 3%) rotate(-5deg); }
+            75% { transform: translate(3%, -2%) rotate(3deg); }
+        }
+        
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+        
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #06b6d4, #10b981);
+            top: 50%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%);
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4, #ec4899, #7c3aed);
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .btn-neon {
+            background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4, #ec4899, #7c3aed);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-neon:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-neon:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.4);
+        }
+        
+        .btn-neon:disabled {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-neon:disabled::before {
+            display: none;
+        }
+        
+        .answer-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .answer-btn:hover:not(.selected):not(:disabled)::before {
+            opacity: 1;
+        }
+        
+        .answer-btn:hover:not(.selected):not(:disabled) {
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateX(8px) scale(1.01);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+        }
+        
+        .answer-btn.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+        
+        .answer-btn.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .answer-btn.timeout {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+        }
+        
+        .letter-badge {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(6, 182, 212, 0.3) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .letter-badge.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(6, 182, 212, 0.3) 100%);
+            border-color: rgba(16, 185, 129, 0.7);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
+        
+        .letter-badge.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(236, 72, 153, 0.3) 100%);
+            border-color: rgba(239, 68, 68, 0.7);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+        
+        .progress-container {
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #7c3aed, #06b6d4, #10b981);
+            background-size: 200% 100%;
+            animation: progressGradient 2s ease infinite;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+        
+        @keyframes progressGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .input-futuristic {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .input-futuristic:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+            outline: none;
+        }
+        
+        .result-success {
+            box-shadow: 
+                0 0 60px rgba(16, 185, 129, 0.3),
+                0 0 120px rgba(6, 182, 212, 0.2);
+        }
+        
+        .result-warning {
+            box-shadow: 
+                0 0 60px rgba(245, 158, 11, 0.3),
+                0 0 120px rgba(236, 72, 153, 0.2);
+        }
+        
+        .result-error {
+            box-shadow: 
+                0 0 60px rgba(239, 68, 68, 0.3),
+                0 0 120px rgba(236, 72, 153, 0.2);
+        }
+        
+        .logo-float {
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(124, 58, 237, 0.6);
+            border-radius: 50%;
+            animation: particleFloat 10s linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #8b5cf6, #14b8a6);
+        }
+        
+        .pulse-ring {
+            animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulseRing {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(124, 58, 237, 0); }
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .icon-3d {
+            background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+            box-shadow: 
+                0 10px 40px rgba(124, 58, 237, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            perspective: 500px;
+        }
+
+        .timer-circle {
+            transform: rotate(-90deg);
+        }
+
+        .timer-warning {
+            animation: timerPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .additional-notice {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #fbbf24;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .error-summary {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #fca5a5;
+        }
+
+        .error-summary ul {
+            margin: 10px 0 0 20px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .error-summary li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body class="aurora-bg text-white">
+    
+    <div class="orb orb-1" style="pointer-events: none;"></div>
+    <div class="orb orb-2" style="pointer-events: none;"></div>
+    <div class="orb orb-3" style="pointer-events: none;"></div>
+    <div class="particles" id="particles" style="pointer-events: none;"></div>
+
+    <header class="sticky top-0 z-50 glass-card border-t-0 border-l-0 border-r-0">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <img src="https://service-ab.ru/assets/package/images/logo.svg" alt="АБ Сервис" class="h-8 sm:h-10 logo-float" style="filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.5));">
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-sm text-gray-400 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                    Система аттестации
+                </div>
+                <button id="adminBtn" class="text-xs text-purple-400 hover:text-purple-300 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="flex items-center justify-center p-4 relative z-10 min-h-screen">
+        <div class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 w-full max-w-md fade-in my-auto">
+            <div class="text-center mb-4 sm:mb-6">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 icon-3d rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4 pulse-ring p-3 sm:p-4 bg-white/10">
+                    <img src="https://krasnodar.ab-onlinekassa.ru/assets/package/images/logo.svg" alt="АБ Сервис" class="w-full h-full object-contain" style="filter: drop-shadow(0 0 15px rgba(124, 58, 237, 0.6));">
+                </div>
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 text-gradient">Аттестация</h1>
+                <p class="text-gray-400 text-xs sm:text-sm md:text-base">Проверка знаний сотрудников</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-3 sm:space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-xs sm:text-sm font-medium mb-1 sm:mb-2">Имя</label>
+                    <input type="text" id="firstName" required
+                        class="w-full px-3 py-2 sm:px-4 sm:py-3 input-futuristic rounded-lg sm:rounded-xl text-white placeholder-gray-500 focus:outline-none text-sm sm:text-base"
+                        placeholder="Введите ваше имя">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-300 text-xs sm:text-sm font-medium mb-1 sm:mb-2">Фамилия</label>
+                    <input type="text" id="lastName" required
+                        class="w-full px-3 py-2 sm:px-4 sm:py-3 input-futuristic rounded-lg sm:rounded-xl text-white placeholder-gray-500 focus:outline-none text-sm sm:text-base"
+                        placeholder="Введите вашу фамилию">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-300 text-xs sm:text-sm font-medium mb-1 sm:mb-2">Должность</label>
+                    <select id="position" required
+                        class="w-full px-3 py-2 sm:px-4 sm:py-3 input-futuristic rounded-lg sm:rounded-xl text-white focus:outline-none cursor-pointer appearance-none text-sm sm:text-base"
+                        style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1em;">
+                        <option value="" disabled selected class="bg-gray-900">Выберите должность</option>
+                        <option value="manager" class="bg-gray-900">Менеджер</option>
+                        <option value="engineer" class="bg-gray-900">Инженер</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="w-full py-2.5 sm:py-3 md:py-4 btn-neon text-white font-semibold rounded-lg sm:rounded-xl mt-2 relative z-10 text-sm sm:text-base">
+                    Начать тестирование
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Test Screen -->
+    <div id="testScreen" class="hidden relative z-10 overflow-y-auto">
+        <div class="p-3 sm:p-4 pb-20">
+            <div class="max-w-2xl mx-auto">
+                <div class="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-3 sm:mb-4 fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-2 sm:mb-3">
+                        <div>
+                            <span id="userName" class="font-semibold text-white text-sm sm:text-base"></span>
+                            <span id="userPosition" class="text-cyan-400 text-xs sm:text-sm ml-2"></span>
+                        </div>
+                        <div class="flex items-center gap-3 sm:gap-4">
+                            <div class="flex items-center gap-1 sm:gap-2 text-gray-400 text-xs sm:text-sm">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Вопрос <span id="currentQuestion" class="text-white font-medium">1</span> из <span id="totalQuestions">20</span></span>
+                            </div>
+                            <!-- Timer -->
+                            <div class="relative w-10 h-10 sm:w-12 sm:h-12">
+                                <svg class="w-10 h-10 sm:w-12 sm:h-12 timer-circle" viewBox="0 0 48 48">
+                                    <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="4"/>
+                                    <circle id="timerCircle" cx="24" cy="24" r="20" fill="none" stroke="#06b6d4" stroke-width="4" 
+                                        stroke-dasharray="125.6" stroke-dashoffset="0" stroke-linecap="round"/>
+                                </svg>
+                                <div id="timerText" class="absolute inset-0 flex items-center justify-center text-xs sm:text-sm font-bold text-cyan-400">60</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-container w-full rounded-full h-1.5 sm:h-2">
+                        <div id="progressBar" class="progress-bar h-1.5 sm:h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="questionCard" class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 fade-in">
+                    <div id="additionalNotice" class="additional-notice hidden mb-4">
+                        Вы ответили неправильно на предыдущие вопросы. Вот дополнительные вопросы для закрепления знаний:
+                    </div>
+
+                    <div class="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 icon-3d rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span id="questionNumber" class="text-white font-bold text-base sm:text-lg">1</span>
+                        </div>
+                        <h2 id="questionText" class="text-base sm:text-lg md:text-xl font-semibold text-white leading-relaxed"></h2>
+                    </div>
+                    
+                    <div id="answersContainer" class="space-y-2 sm:space-y-3 max-h-96 overflow-y-auto"></div>
+                    
+                    <button id="nextBtn" disabled
+                        class="w-full mt-4 sm:mt-6 py-3 sm:py-4 btn-neon text-white font-semibold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 relative z-10 text-sm sm:text-base">
+                        <span>Следующий вопрос</span>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="hidden flex items-center justify-center p-4 relative z-10 min-h-screen overflow-y-auto">
+        <div id="resultCard" class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 w-full max-w-lg text-center fade-in my-8">
+            <div id="resultIcon" class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"></div>
+            <h2 id="resultTitle" class="text-2xl sm:text-3xl font-bold text-white mb-2"></h2>
+            <p id="resultName" class="text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base"></p>
+            
+            <div class="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6">
+                <div class="flex items-center justify-center gap-2 mb-2 sm:mb-3">
+                    <span id="correctCount" class="text-3xl sm:text-4xl md:text-5xl font-bold text-gradient">0</span>
+                    <span class="text-2xl sm:text-3xl text-gray-500">/</span>
+                    <span id="totalCount" class="text-2xl sm:text-3xl text-gray-400">15</span>
+                </div>
+                <p id="additionalCountText" class="text-gray-400 mb-2 sm:mb-4 text-xs sm:text-sm"></p>
+                <div class="text-3xl sm:text-4xl md:text-5xl font-bold" id="percentage"></div>
+            </div>
+            
+            <div class="space-y-2 sm:space-y-3">
+                <button id="restartBtn" class="w-full py-3 sm:py-4 btn-neon text-white font-semibold rounded-lg sm:rounded-xl flex items-center justify-center gap-2 relative z-10 text-sm sm:text-base">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Пройти заново</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden relative z-10 overflow-auto p-4 pt-20 min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gradient">Панель администратора</h1>
+                <button id="closeAdminBtn" class="px-3 py-2 sm:px-4 glass-card rounded-lg sm:rounded-xl text-white hover:bg-white/10 transition-all text-sm sm:text-base">
+                    Закрыть
+                </button>
+            </div>
+            
+            <div class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 mb-4 sm:mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div class="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                        <div class="text-gray-400 text-xs sm:text-sm mb-1">Всего тестов</div>
+                        <div class="text-2xl sm:text-3xl font-bold text-gradient" id="totalTests">0</div>
+                    </div>
+                    <div class="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                        <div class="text-gray-400 text-xs sm:text-sm mb-1">Средний балл</div>
+                        <div class="text-2xl sm:text-3xl font-bold text-cyan-400" id="avgScore">0%</div>
+                    </div>
+                    <div class="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                        <div class="text-gray-400 text-xs sm:text-sm mb-1">Успешных (≥80%)</div>
+                        <div class="text-2xl sm:text-3xl font-bold text-emerald-400" id="successRate">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-4 sm:p-6">
+                <h2 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">История тестирований</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs sm:text-sm" id="resultsTable">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="text-left py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">Дата</th>
+                                <th class="text-left py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">ФИО</th>
+                                <th class="text-left py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium hidden sm:table-cell">Должность</th>
+                                <th class="text-center py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">Результат</th>
+                                <th class="text-center py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">%</th>
+                                <th class="text-center py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">Статус</th>
+                                <th class="text-center py-2 sm:py-3 px-1 sm:px-2 text-gray-400 font-medium">Детали</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center py-6 sm:py-8 text-gray-500">Нет данных</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-2xl fade-in my-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-gradient">Детали ответов</h2>
+                <button id="closeDetailsBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div id="detailsContent" class="space-y-4 max-h-96 overflow-y-auto">
+                <!-- Будет заполнено JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="glass-card gradient-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md fade-in">
+            <h2 class="text-xl sm:text-2xl font-bold text-gradient mb-4 sm:mb-6 text-center">Вход для администратора</h2>
+            <form id="adminLoginForm">
+                <div class="mb-4 sm:mb-5">
+                    <label class="block text-gray-300 text-xs sm:text-sm font-medium mb-1 sm:mb-2">Пароль</label>
+                    <input type="password" id="adminPassword" required
+                        class="w-full px-3 py-2.5 sm:px-4 sm:py-3.5 input-futuristic rounded-lg sm:rounded-xl text-white placeholder-gray-500 focus:outline-none text-sm sm:text-base"
+                        placeholder="Введите пароль">
+                </div>
+                <div class="flex gap-2 sm:gap-3">
+                    <button type="button" id="cancelAdminBtn" class="flex-1 py-2.5 sm:py-3 glass-card rounded-lg sm:rounded-xl text-white hover:bg-white/10 transition-all text-sm sm:text-base">
+                        Отмена
+                    </button>
+                    <button type="submit" class="flex-1 py-2.5 sm:py-3 btn-neon text-white font-semibold rounded-lg sm:rounded-xl relative z-10 text-sm sm:text-base">
+                        Войти
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "admin2026";
+        const TIMER_DURATION = 60;
+        const BASIC_QUESTIONS_COUNT = 15;
+
+        const managerQuestions = [
+            // БЛОК 1: Приём оборудования (28 вопросов)
+            { question: "Что запрещено писать в поле 'Заявленные дефекты' при приёме оборудования?", answers: ["Симптомы со слов клиента", "\"Диагностика\", \"неизвестно\", \"не знают\"", "Подробное описание проблемы", "Информацию о внешнем виде"], correct: 1, block: 0 },
+            { question: "Менеджер написал в дефектах 'Неизвестно, клиент не знает'. Это правильно?", answers: ["Да, если клиент действительно не знает", "Да, потом инженер разберётся", "Нет, такие формулировки запрещены", "Да, но только для курьерской доставки"], correct: 2, block: 0 },
+            { question: "Какие формулировки НЕЛЬЗЯ использовать при описании дефекта?", answers: ["\"Касса не включается\"", "\"Устройство не заряжается\"", "\"Диагностика\", \"неизвестно\", \"требуется проверка\"", "\"Самопроизвольно выключается\""], correct: 2, block: 0 },
+            { question: "Клиент сдал оборудование через курьера. Что нужно сделать?", answers: ["Написать \"доставлено курьером\" в дефектах", "Ждать пока клиент сам позвонит", "Позвонить клиенту и дословно записать, что с оборудованием", "Отправить оборудование сразу на диагностику"], correct: 2, block: 0 },
+            { question: "Оборудование приехало курьером без описания проблемы. Ваши действия?", answers: ["Написать \"со слов курьера\"", "Указать \"дефект неизвестен\"", "Связаться с клиентом и записать дефект его словами", "Принять без указания дефекта"], correct: 2, block: 0 },
+            { question: "Курьер привёз кассу, но не знает что с ней. Как поступить?", answers: ["Принять с пометкой \"диагностика\"", "Отказать в приёме", "Позвонить клиенту и дословно записать проблему", "Написать \"неизвестно\""], correct: 2, block: 0 },
+            { question: "Как правильно описать проблему с аккумулятором в поле 'Заявленные дефекты'?", answers: ["\"Касса разряжается за пару часов, не заряжается до 100%\"", "\"Требуется замена АКБ\"", "\"Проблема с батареей\"", "\"Диагностика АКБ\""], correct: 0, block: 0 },
+            { question: "Клиент говорит, что касса быстро разряжается. Как записать дефект?", answers: ["\"Замена АКБ\"", "\"Проблема с аккумулятором\"", "\"Касса полностью разряжается за пару часов работы\"", "\"Требуется диагностика АКБ\""], correct: 2, block: 0 },
+            { question: "Какая формулировка дефекта ПРАВИЛЬНАЯ?", answers: ["\"Нужна замена батареи\"", "\"При подключении к зарядке устройство не включается\"", "\"Требуется ремонт зарядки\"", "\"Диагностика питания\""], correct: 1, block: 0 },
+            { question: "Какие поля ОБЯЗАТЕЛЬНО заполнять при приёме оборудования?", answers: ["Только модель и серийный номер", "Только дефекты и комплектность", "Организация, дефекты, комплектность, внешний вид, тип, модель, серийный номер, пломбы", "Достаточно указать тип оборудования"], correct: 2, block: 0 },
+            { question: "Менеджер заполнил только модель и дефект. Достаточно ли этого?", answers: ["Да, остальное необязательно", "Да, если клиент торопится", "Нет, нужно заполнить все обязательные поля", "Да, для быстрого ремонта"], correct: 2, block: 0 },
+            { question: "Какое поле можно НЕ заполнять при приёме Sigma 8?", answers: ["Комплектность", "Внешний вид", "Серийный номер", "Все перечисленные поля обязательны"], correct: 3, block: 0 },
+            { question: "Оборудование поступило с царапиной на корпусе. Ваши действия?", answers: ["Не указывать, это мелочь", "Указать только в комментариях", "Указать клиенту, зафиксировать в \"Внешний вид\", сделать фото и прикрепить к заявке", "Отказать в приёме оборудования"], correct: 2, block: 0 },
+            { question: "На корпусе кассы обнаружена трещина. Что делать?", answers: ["Принять молча, потом разберёмся", "Показать клиенту, записать в \"Внешний вид\", сфотографировать/записать видео", "Отказать в приёме", "Позвонить руководителю"], correct: 1, block: 0 },
+            { question: "Вы заметили скол на углу ноутбука при приёме. Правильный порядок действий?", answers: ["Сфотографировать и отправить руководителю", "Записать в комментарии и принять", "Обратить внимание клиента, зафиксировать в \"Внешний вид\", сделать фото/записать видео, прикрепить к заявке", "Отказать в приёме до устранения"], correct: 2, block: 0 },
+            { question: "Клиент сдаёт ноутбук с зарядным устройством. Как промаркировать зарядку?", answers: ["Маркировка не требуется", "Отдельным номером заявки", "Стикером с номером заявки ноутбука", "Написать маркером на зарядке"], correct: 2, block: 0 },
+            { question: "Как маркировать периферийные устройства (зарядки, кабели)?", answers: ["Не маркировать, и так понятно", "Общим стикером \"Периферия\"", "Стикером с номером заявки основного устройства", "Отдельной заявкой на каждое"], correct: 2, block: 0 },
+            { question: "Клиент сдаёт ТСД с зарядной станцией. Какой номер указать на станции?", answers: ["Новый отдельный номер", "Номер заявки ТСД", "Номер не нужен", "Серийный номер станции"], correct: 1, block: 0 },
+            { question: "Что нужно обязательно спросить при приёме ноутбука, ПК или ТСД?", answers: ["Год покупки устройства", "Установлен ли пароль на устройство", "Контакты предыдущего владельца", "Какой антивирус установлен"], correct: 1, block: 0 },
+            { question: "Клиент сдаёт ноутбук. Какой вопрос обязателен?", answers: ["\"Когда покупали?\"", "\"Какая операционная система?\"", "\"Есть ли пароль на устройстве? Если да, назовите его.\"", "\"Делали ли резервную копию?\""], correct: 2, block: 0 },
+            { question: "Принимаете ПК в ремонт. О чём обязательно спросить клиента?", answers: ["О наличии лицензии Windows", "Установлен ли пароль для входа, ПК на гарантии?", "О наличии 1С", "О гарантийном сроке"], correct: 1, block: 0 },
+            { question: "После размещения оборудования на полке, что нужно указать в заявке?", answers: ["Ничего дополнительно не нужно", "Дату размещения", "В комментариях: \"Оборудование размещено на полке [номер]\"", "Фамилию ответственного инженера"], correct: 2, block: 0 },
+            { question: "Куда записать информацию о месте хранения оборудования?", answers: ["В отдельный журнал", "В поле \"Внешний вид\"", "В поле \"Комментарии\" в заявке", "Никуда, это необязательно"], correct: 2, block: 0 },
+            { question: "Вы положили принтер на полку M15. Что указать в заявке?", answers: ["\"Полка 15\"", "\"Оборудование на полке M15\"", "Ничего указывать не нужно", "\"Мастерская, стеллаж 15\""], correct: 1, block: 0 },
+            { question: "Сколько экземпляров квитанции о приёме оборудования нужно оформить?", answers: ["1 экземпляр", "2 экземпляра", "3 экземпляра", "Зависит от стоимости оборудования"], correct: 1, block: 0 },
+            { question: "Клиент сдаёт оборудование. Сколько квитанций печатать?", answers: ["Одну для клиента", "Одну для сервиса", "Две: одну клиенту, одну в сервис", "Три: клиенту, в сервис, в архив"], correct: 2, block: 0 },
+            { question: "Что должно быть на обоих экземплярах квитанции?", answers: ["Только подпись менеджера", "Только печать сервиса", "Подпись клиента и печать сервиса", "Только штамп с датой"], correct: 2, block: 0 },
+            { question: "Квитанция оформлена, но клиент не подписал. Можно ли принять оборудование?", answers: ["Да, подпись необязательна", "Да, достаточно печати", "Нет, подпись клиента обязательна на обоих экземплярах", "Да, если есть свидетели"], correct: 2, block: 0 },
+
+            // БЛОК 2: Правило "Почему" (8 вопросов)
+            { question: "Когда нужно отвечать на вопрос \"Почему\" в заявке?", answers: ["Только по запросу руководителя", "Только при сложных ремонтах", "При любом неполном процессе с устройством или клиентом", "Только при гарантийных случаях"], correct: 2, block: 1 },
+            { question: "В каких случаях нужно писать пояснение \"почему\"?", answers: ["Только при отказе клиента от ремонта", "При любом отклонении от стандартного процесса", "Только при гарантийных случаях", "Только по запросу руководства"], correct: 1, block: 1 },
+            { question: "Сколько слов достаточно для ответа на вопрос \"Почему\"?", answers: ["1-2 слова", "3-4 слова", "Минимум 10 слов", "Полное предложение обязательно"], correct: 1, block: 1 },
+            { question: "Какой длины должно быть пояснение к нестандартной ситуации?", answers: ["Одно слово", "Основная суть ситуации", "Минимум абзац", "Чем больше, тем лучше"], correct: 1, block: 1 },
+            { question: "Заводской номер не был указан при приёме. Что нужно сделать?", answers: ["Оставить поле пустым", "Написать \"отсутствует\"", "Указать причину — \"почему\" (3-4 слова)", "Позвонить руководителю"], correct: 2, block: 1 },
+            { question: "Инженер не смог проверить дисплей. Что должен написать?", answers: ["\"Не проверял\"", "\"Нет возможности\"", "Пояснение почему: например \"нет тестового кабеля\"", "Ничего, пропустить этот пункт"], correct: 2, block: 1 },
+            { question: "Клиент согласовал не все позиции из диагностики. Что указать?", answers: ["\"Частичное согласование\"", "Только согласованные позиции", "Что согласовано + почему остальное не согласовано", "Ничего дополнительно"], correct: 2, block: 1 },
+            { question: "Для кого важны пояснения \"почему\" в заявке?", answers: ["Только для руководства", "Только для инженеров", "Для всех сотрудников и для клиента", "Только для бухгалтерии"], correct: 2, block: 1 },
+
+            // БЛОК 3: Работа с клиентами по телефону (8 вопросов)
+            { question: "Звонит человек и просит контакт руководства для предложения о сотрудничестве. Ваши действия?", answers: ["Дать личный номер директора", "Переключить на руководителя", "Предложить отправить запрос на почту staff@a-b.ru", "Записать контакты и передать руководству"], correct: 2, block: 2 },
+            { question: "Поступил звонок с предложением о рекламе. Что ответить?", answers: ["Соединить с директором", "Отказать и положить трубку", "\"Направьте предложение на почту staff@a-b.ru\"", "Записать информацию и передать руководству"], correct: 2, block: 2 },
+            { question: "Клиент требует телефон директора для жалобы. Ваши действия?", answers: ["Дать номер директора", "Проинформировать руководителя", "Сказать, что директора нет", "Переключить на старшего менеджера"], correct: 1, block: 2 },
+            { question: "На какую почту направлять предложения о сотрудничестве и рекламе?", answers: ["info@a-b.ru", "staff@a-b.ru", "sales@a-b.ru", "support@a-b.ru"], correct: 1, block: 2 },
+            { question: "Какой email называть для предложений о сотрудничестве?", answers: ["Личную почту руководителя", "staff@a-b.ru", "Любую корпоративную почту", "Почту отдела продаж"], correct: 1, block: 2 },
+            { question: "Звонящий спрашивает адрес почты для коммерческого предложения. Что назвать?", answers: ["info@a-b.ru", "sales@a-b.ru", "staff@a-b.ru", "hr@a-b.ru"], correct: 2, block: 2 },
+            { question: "Можно ли давать прямые контакты руководства звонящим?", answers: ["Да, всегда", "Да, если просят вежливо", "Нет, без согласования", "Только постоянным клиентам"], correct: 2, block: 2 },
+            { question: "Звонящий настаивает на личном номере директора. Как поступить?", answers: ["Дать номер, раз настаивает", "Уточнить суть обращения, проинформировать руководителя", "Проинформировать руководителя", "Передать клиента на КК"], correct: 1, block: 2 },
+
+            // БЛОК 4: Гарантия ЭВОТОР (16 вопросов)
+            { question: "Являемся ли мы авторизованным сервисным центром ЭВОТОР?", answers: ["Да, полностью авторизованы", "Да, но только по ремонту", "Нет, мы посредник между клиентом и СЦ \"Первый Бит\"", "Да, но только по диагностике"], correct: 2, block: 3 },
+            { question: "Какова наша роль в гарантийном обслуживании ЭВОТОР?", answers: ["Полный цикл ремонта", "Посредник — принимаем и передаём в \"Первый Бит\"", "Только диагностика", "Никакой, отправляем клиента напрямую"], correct: 1, block: 3 },
+            { question: "Клиент спрашивает: \"Вы чините ЭВОТОР по гарантии?\" Правильный ответ:", answers: ["\"Да, мы авторизованный сервис\"", "\"Мы не проводим ремонт, а передаём оборудование в СЦ 'Первый Бит'\"", "\"Нет, обращайтесь к производителю\"", "\"Да, но только платно\""], correct: 1, block: 3 },
+            { question: "Куда передаётся оборудование ЭВОТОР на гарантийный ремонт?", answers: ["В наш сервисный центр", "Напрямую производителю", "В авторизованный СЦ \"Первый Бит\"", "В любой ближайший сервис"], correct: 2, block: 3 },
+            { question: "В какой сервисный центр мы передаем оборудование для гарантийного ремонта ЭВОТОР?", answers: ["Наш АСЦ", "Сервис производителя", "\"Первый Бит\"", "Любой авторизованный"], correct: 2, block: 3 },
+            { question: "Сколько стоит диагностика в \"Первый Бит\", если клиент отказывается от платного ремонта?", answers: ["Бесплатно", "500 рублей", "800 рублей", "1000 рублей"], correct: 2, block: 3 },
+            { question: "Клиент сдал ЭВОТОР, но отказался от платного ремонта. Сколько он заплатит за диагностику?", answers: ["Ничего, диагностика бесплатна", "800 рублей", "1000 рублей", "1500 рублей"], correct: 1, block: 3 },
+            { question: "Когда диагностика ЭВОТОР в \"Первый Бит\" бесплатна?", answers: ["Всегда бесплатна", "Никогда не бесплатна", "Если клиент согласен на ремонт", "Только для новых клиентов"], correct: 2, block: 3 },
+            { question: "Какие детали ЭВОТОР заменяются только за счёт клиента (не по гарантии)?", answers: ["Материнская плата", "Батарея, зарядка, печатающий механизм", "Корпус и кнопки", "Дисплей"], correct: 1, block: 3 },
+            { question: "Клиент просит бесплатно заменить батарею ЭВОТОР по гарантии. Что ответить?", answers: ["\"Да, это гарантийный случай\"", "\"Батарея — ресурсная деталь, замена только платно\"", "\"Обратитесь напрямую к производителю\"", "\"Нужно проверить условия гарантии\""], correct: 1, block: 3 },
+            { question: "Какие детали считаются ресурсными и не покрываются гарантией ЭВОТОР?", answers: ["Дисплей, клавиатура, корпус", "Материнская плата, процессор", "Батарея, зарядка, печатающий механизм", "Все детали покрываются гарантией"], correct: 2, block: 3 },
+            { question: "Что покрывает гарантия ЭВОТОР?", answers: ["Любые поломки", "Ресурсные детали", "Только заводские дефекты", "Механические повреждения"], correct: 2, block: 3 },
+            { question: "На что распространяется гарантия ЭВОТОР?", answers: ["На любой износ", "На падения и удары", "Только на заводской брак", "На батарею и зарядку"], correct: 2, block: 3 },
+            { question: "Доставка оборудования ЭВОТОР в \"Первый Бит\" для клиента:", answers: ["Платная — 500 рублей", "Платная — 300 рублей", "Бесплатная (за наш счёт)", "Оплачивается при получении"], correct: 2, block: 3 },
+            { question: "Клиент спрашивает, сколько стоит доставка ЭВОТОР на гарантию. Ответ:", answers: ["\"500 рублей\"", "\"Зависит от адреса\"", "\"Бесплатно, мы доставим за свой счёт\"", "\"Оплатите при получении обратно\""], correct: 2, block: 3 },
+            { question: "Что сказать клиенту при обращении по гарантии ЭВОТОР?", answers: ["\"Оставьте оборудование, мы починим\"", "\"Можете обратиться напрямую в 'Первый Бит' или мы бесплатно передадим оборудование туда\"", "\"Гарантия не действует, только платный ремонт\"", "\"Обращайтесь к продавцу\""], correct: 1, block: 3 },
+
+            // БЛОК 5: Документы и акты (4 вопроса)
+            { question: "Сколько стоит акт диагностики?", answers: ["Бесплатно", "500 рублей", "1000 рублей за единицу оборудования", "1500 рублей"], correct: 2, block: 4 },
+            { question: "Клиент просит акт диагностики. Какова стоимость?", answers: ["Входит в стоимость ремонта", "1000 рублей за каждую единицу оборудования", "Бесплатно по запросу", "500 рублей"], correct: 1, block: 4 },
+            { question: "Клиент просит акт диагностики на 3 единицы оборудования. Какова общая стоимость?", answers: ["1000 рублей", "2000 рублей", "3000 рублей", "Бесплатно"], correct: 2, block: 4 },
+            { question: "Нужен акт диагностики на 2 кассы. Сколько это стоит?", answers: ["1000 рублей за обе", "1500 рублей", "2000 рублей (по 1000 за каждую)", "Бесплатно, если был ремонт"], correct: 2, block: 4 },
+
+            // БЛОК 6: Модернизация и сборка ПК (16 вопросов)
+            { question: "Клиент ЮЛ хочет купить новый ПК. Что ОБЯЗАТЕЛЬНО нужно спросить?", answers: ["Какой бюджет", "Какой бренд предпочитает", "Через какую программу работает (1С или ilko)", "Какие игры планирует запускать"], correct: 2, block: 5 },
+            { question: "Звонит клиент ЮЛ: хочет модернизировать ПК. Первый вопрос:", answers: ["\"Какой у вас бюджет?\"", "\"Какой процессор сейчас?\"", "\"Через какую программу вы работаете — 1С или ilko?\"", "\"Когда удобно приехать?\""], correct: 2, block: 5 },
+            { question: "Клиент ЮЛ хочет обновить компьютер для работы. О чём спросить в первую очередь?", answers: ["О желаемых характеристиках", "Какую программу использует: 1С или ilko", "О бюджете на апгрейд", "О сроках"], correct: 1, block: 5 },
+            { question: "Можно ли переставить старый SSD клиента в новую сборку ПК?", answers: ["Да, это стандартная практика", "Да, если SSD исправен", "Нет, только перенос базы на новую ОС через отдел 1С/ilko", "Да, но только HDD"], correct: 2, block: 5 },
+            { question: "Клиент просит: \"Просто переставьте мой диск в новый компьютер.\" Ваш ответ:", answers: ["\"Хорошо, сделаем\"", "\"Это будет стоить дополнительно\"", "\"Мы так не делаем. Нужен перенос базы на новую ОС через отдел 1С\"", "\"Только если диск SSD\""], correct: 2, block: 5 },
+            { question: "Менеджер предложил клиенту переставить старый HDD в новый ПК. Это правильно?", answers: ["Да, это экономит деньги клиента", "Да, если HDD исправен", "Нет, это запрещено — только перенос базы на новую ОС", "Да, но нужно согласовать с инженером"], correct: 2, block: 5 },
+            { question: "Почему нельзя клонировать старую систему на новый ПК?", answers: ["Это слишком долго", "Клиент должен платить за Windows", "Драйверы несовместимы, система может не работать корректно", "Это запрещено лицензией Microsoft"], correct: 2, block: 5 },
+            { question: "Почему нельзя просто переставить старый накопитель в новую сборку?", answers: ["Можно, это стандартная процедура", "Старая ОС несовместима с новым железом, будут проблемы с драйверами", "Только из-за лицензии Windows", "Клиент потеряет гарантию"], correct: 1, block: 5 },
+            { question: "Куда передать заявку после сбора информации о ПК клиента для оценки переноса базы?", answers: ["Сразу клиенту", "Руководителю", "На отдел 1С/ilko для оценки стоимости работ", "На склад"], correct: 2, block: 5 },
+            { question: "Специалист собрал информацию о ПК клиента. Следующий шаг:", answers: ["Назвать клиенту стоимость", "Оформить счёт", "Передать информацию в отдел 1С/ilko для оценки работ", "Согласовать с руководителем"], correct: 2, block: 5 },
+            { question: "Сколько стоит сборка офисного ПК?", answers: ["1000 рублей", "1500 рублей", "2000 рублей", "2500 рублей"], correct: 1, block: 5 },
+            { question: "Клиент хочет собрать простой офисный компьютер. Стоимость сборки:", answers: ["1000 рублей", "1500 рублей", "2000 рублей", "Бесплатно при покупке комплектующих"], correct: 1, block: 5 },
+            { question: "Сколько стоит сборка игрового ПК с кабель-менеджментом 1 уровня сложности?", answers: ["1500 рублей", "2000 рублей", "2500 рублей", "3000 рублей"], correct: 2, block: 5 },
+            { question: "Сколько стоит сборка игрового ПК с кабель-менеджментом 2 уровня сложности?", answers: ["2500 рублей", "3000 рублей", "3500 рублей", "4500 рублей"], correct: 2, block: 5 },
+            { question: "Сколько стоит сборка игрового ПК с кабель-менеджментом максимальной (3) сложности?", answers: ["3500 рублей", "4000 рублей", "4500 рублей", "5000 рублей"], correct: 2, block: 5 },
+            { question: "Клиент хочет сборку игрового ПК с кабель-менеджментом максимальной сложности. Цена:", answers: ["3500 рублей", "4000 рублей", "4500 рублей", "5500 рублей"], correct: 2, block: 5 },
+
+            // БЛОК 7: Удалённая диагностика и распределение заявок (8 вопросов)
+            { question: "Кому передавать заявку на удалённую диагностику ПК/1С?", answers: ["Менеджеру сервиса", "На ответственного Сервис АСЦ", "Отделу ПО 1С", "Любому инженеру Краснодара"], correct: 1, block: 6 },
+            { question: "Поступила заявка на удалённую диагностику 1С. На кого её назначить?", answers: ["На ближайшего свободного инженера", "На системного администратора Владислава", "На ответственного АБ-сервис", "На руководителя отдела"], correct: 2, block: 6 },
+            { question: "Клиенту нужна удалённая диагностика ПК. Куда направить заявку?", answers: ["Владиславу", "В отдел 1С", "На ответственного Сервис АСЦ", "Любому свободному инженеру"], correct: 2, block: 6 },
+            { question: "Можно ли передать заявку на удалённую диагностику напрямую Владиславу?", answers: ["Да, он системный администратор", "Да, если он свободен", "Нет, все заявки идут на ответственного АБ-сервис", "Да, для срочных случаев"], correct: 2, block: 6 },
+            { question: "Кто распределяет заявки на удалённую диагностику между инженерами?", answers: ["Денис", "Владислав", "Кирилл", "Любой инженер"], correct: 2, block: 6 },
+            { question: "Заявки на удалённую диагностику распределяет:", answers: ["Менеджер, принявший заявку", "Кирилл", "Сам клиент выбирает специалиста", "Дежурный инженер"], correct: 1, block: 6 },
+            { question: "На кого Кирилл может распределить заявку по удалённой диагностике?", answers: ["На любого инженера филиала", "На Даниила Пичугина или Дениса Баклушина", "Только на Владислава", "На внешнего подрядчика"], correct: 1, block: 6 },
+            { question: "Кто выполняет удалённую диагностику ПК?", answers: ["Любой инженер Краснодара", "Владислав", "Даниил Пичугин или Денис Баклушин", "Отдел 1С"], correct: 2, block: 6 },
+
+            // БЛОК 8: Оборудование по скупке (3 вопроса)
+            { question: "Какие АКБ устанавливаются в оборудование по скупке?", answers: ["Новые оригинальные", "Любые рабочие", "Только восстановленные АКБ", "АКБ не устанавливаются"], correct: 2, block: 7 },
+            { question: "В скупленную кассу нужно поставить аккумулятор. Какой использовать?", answers: ["Новый с поставки", "Любой исправный", "Только восстановленный АКБ", "Оригинальный от производителя"], correct: 2, block: 7 },
+            { question: "Можно ли ставить новый АКБ в оборудование для скупки?", answers: ["Да, клиент получит лучшее качество", "Да, это стандарт", "Нет, только восстановленные АКБ", "Да, если клиент доплатит"], correct: 2, block: 7 },
+
+            // БЛОК 9: Сложные ремонты (через Витю) (4 вопроса)
+            { question: "Как указывать стоимость в диагностике по сложным ремонтам (через Витю)?", answers: ["Только сумму закупки", "Общую сумму без детализации", "Розничную сумму по каждому элементу отдельно", "Согласовывать с руководителем"], correct: 2, block: 8 },
+            { question: "Витя продиагностировал сложный ремонт. Как записать стоимость?", answers: ["Одной общей суммой", "По каждому элементу отдельно: \"микроконтроллер — 6000, ШИМ — 3000, работы — 5000\"", "Только сумму запчастей", "Только сумму работ"], correct: 1, block: 8 },
+            { question: "На какие ремонты распространяется правило указания розничных сумм в диагностике?", answers: ["На все ремонты", "Только на гарантийные", "Только на сложные ремонты через Витю", "На ремонты свыше 10000 рублей"], correct: 2, block: 8 },
+            { question: "При формировании счета в КА2 для каких клиентов нужно указывать розничную сумму?", answers: ["Для всех без исключения", "Для сложных ремонтов, проходящих через Витю", "Только для ремонтов ПК", "Только при сумме свыше 5000 рублей"], correct: 0, block: 8 },
+
+            // БЛОК 10: Филиалы и согласования (7 вопросов)
+            { question: "Можно ли согласовывать ремонт с клиентом через мессенджеры?", answers: ["Да, это удобно", "Нет, только если клиент сам инициировал переписку", "Да, только через WhatsApp", "Только для постоянных клиентов"], correct: 1, block: 9 },
+            { question: "Клиент написал в WhatsApp первым. Можно ли согласовать ремонт там?", answers: ["Нет, только по телефону", "Да, если клиент сам начал переписку", "Нет, только через email", "Да, но нужно подтвердить звонком"], correct: 1, block: 9 },
+            { question: "Менеджер написал клиенту в Telegram для согласования ремонта первым. Это правильно?", answers: ["Да, так быстрее", "Да, если клиент указал Telegram в контактах", "Нет, мессенджеры только если клиент сам написал первым", "Да, для VIP-клиентов"], correct: 2, block: 9 },
+            { question: "Кто выставляет счета по АСЦ?", answers: ["Руководитель", "Инженер сервиса", "Менеджер сервиса", "Бухгалтерия"], correct: 2, block: 9 },
+            { question: "Можно ли менеджеру филиала выставить счёт по АСЦ?", answers: ["Да, если есть доступ", "Да, для ускорения процесса", "Нет, счета выставляются только менеджером сервиса", "Да, но с согласования"], correct: 2, block: 9 },
+            { question: "Кто занимается доставкой оборудования между филиалами и АСЦ?", answers: ["Курьерская служба", "Сервисный центр Краснодар", "Филиал (в обе стороны)", "Клиент самостоятельно"], correct: 2, block: 9 },
+            { question: "Можно ли называть цены на запчасти другим отделам?", answers: ["Да, для ускорения работы", "Да, коллегам можно", "Нет, никаких цен и номенклатур другим отделам", "Да, если просят руководители"], correct: 2, block: 9 },
+
+            // БЛОК 11: Сроки диагностики в филиалах (10 вопросов)
+            { question: "Сколько дней занимает стандартная диагностика в филиале Анапа?", answers: ["1 день", "2-3 дня", "5 дней", "1 неделя"], correct: 1, block: 10 },
+            { question: "Клиент в Анапе спрашивает срок диагностики. Что ответить?", answers: ["\"Один день\"", "\"2-3 дня\"", "\"Неделя\"", "\"Зависит от загрузки\""], correct: 1, block: 10 },
+            { question: "Стандартный срок диагностики в филиале Анапа:", answers: ["В тот же день", "2-3 дня", "5 рабочих дней", "До недели"], correct: 1, block: 10 },
+            { question: "В каких филиалах специалист ВСЕГДА присутствует в офисе?", answers: ["Анапа, Геленджик, Туапсе", "Сочи, Новороссийск, Ставрополь", "Все филиалы", "Только Краснодар"], correct: 1, block: 10 },
+            { question: "В каком филиале НЕ нужно ждать приезда специалиста в офис для диагностики?", answers: ["Анапа", "Геленджик", "Сочи, Новороссийск, Ставрополь", "Все филиалы одинаково"], correct: 2, block: 10 },
+            { question: "В каких филиалах диагностика может быть быстрее из-за постоянного присутствия специалиста?", answers: ["Анапа, Туапсе", "Только Краснодар", "Сочи, Новороссийск, Ставрополь", "Все филиалы"], correct: 2, block: 10 },
+            { question: "Что обязательно делать при оформлении заявки в филиале?", answers: ["Отправить фото оборудования", "Сообщить клиенту срок диагностики и выдать квитанцию под подпись", "Позвонить в Краснодар", "Ничего особенного"], correct: 1, block: 10 },
+            { question: "Приняли оборудование в филиале Анапа. Что сказать клиенту?", answers: ["\"Позвоним когда будет готово\"", "\"Срок диагностики 2-3 дня\" и выдать квитанцию под подпись", "\"Диагностика сегодня\"", "\"Срок зависит от сложности\""], correct: 1, block: 10 },
+            { question: "Что делать, если в филиале Анапа нужна срочная диагностика?", answers: ["Отправить оборудование в Краснодар", "Отказать клиенту", "Менеджер сервиса уточняет у филиала возможность привлечения специалиста раньше", "Сделать диагностику самостоятельно"], correct: 2, block: 10 },
+            { question: "Клиенту в Анапе срочно нужна диагностика. Ваши действия:", answers: ["Отправить в Краснодар", "Сказать \"ждите 2-3 дня\"", "Менеджер сервиса уточняет у филиала возможность привлечения специалиста раньше", "Отказать в срочном ремонте"], correct: 2, block: 10 },
+
+            // БЛОК 12: Отложенные чеки (9 вопросов)
+            { question: "Какие программы поддерживаются для настройки отложенных чеков?", answers: ["Только 1С УНФ", "1С Розница 2.2+, УНФ 1.6+, УТ 11.4+, Штрих-М, Frontol 5/6 без алкоголя", "Все версии Frontol", "Только смарт-терминалы"], correct: 1, block: 11 },
+            { question: "Клиент спрашивает, настроите ли вы отложенные чеки для 1С Розница 2.1. Ответ:", answers: ["\"Да, настроим\"", "\"Нет, поддерживаем только версию 2.2 и выше\"", "\"Да, но платно\"", "\"Обратитесь к разработчику\""], correct: 1, block: 11 },
+            { question: "Для каких версий 1С УНФ поддерживается настройка отложенных чеков?", answers: ["Все версии", "Только последняя", "УНФ 1.6 и выше", "Не поддерживается вообще"], correct: 2, block: 11 },
+            { question: "Клиент спрашивает про настройку отложенных чеков. Поддерживаем ли мы смарт-терминалы?", answers: ["Да, все модели смарт-терминалов", "Только АТОЛ смарт-терминалы", "Нет, на смарт-терминалы это не возможно", "Да, только при наличии договора ТП"], correct: 2, block: 11 },
+            { question: "Можно ли настроить отложенные чеки на смарт-терминале АТОЛ?", answers: ["Да, стандартная услуга ТП", "Да, но платно", "Нет, не возможно", "Только для определённых моделей"], correct: 2, block: 11 },
+            { question: "Можно ли настроить отложенные чеки для Frontol с алкоголем?", answers: ["Да, стандартная услуга", "Нет, не поддерживаем", "Только для крупных клиентов", "Только при наличии договора"], correct: 1, block: 11 },
+            { question: "Клиент работает с Frontol 6 + ЕГАИС. Настроим отложенные чеки?", answers: ["Да, это стандарт", "Да, но дороже", "Нет, Frontol с алкоголем не поддерживаем", "Только после обновления Frontol"], correct: 2, block: 11 },
+            { question: "Что обязательно говорить клиенту при настройке отложенных чеков?", answers: ["\"Мы всё настроим и пробьём за вас чеки\"", "\"Это бесплатная услуга\"", "\"Техподдержка только включит функцию, чеки за вас не пробиваем\"", "\"Нужно купить новую кассу\""], correct: 2, block: 11 },
+            { question: "Клиент ожидает, что мы пробьём отложенные чеки за него. Что ответить?", answers: ["\"Да, конечно\"", "\"Это входит в стоимость\"", "\"ТП только включает функцию, чеки вы пробиваете самостоятельно\"", "\"Только за дополнительную плату\""], correct: 2, block: 11 },
+
+            // БЛОК 13: Сертификаты и скидки (6 вопросов)
+            { question: "Какой сертификат получает клиент за отзыв на картах?", answers: ["500₽ на запчасти", "1000₽ на запчасти", "1000₽ на услуги сервиса", "Бесплатная диагностика"], correct: 2, block: 12 },
+            { question: "Клиент оставил отзыв на картах. Что он получает?", answers: ["Скидку 10% на следующий ремонт", "Сертификат на 1000₽ на услуги", "Бесплатную диагностику", "1000₽ на запчасти"], correct: 1, block: 12 },
+            { question: "На что действует сертификат 1000₽ за отзыв на картах?", answers: ["На запчасти", "Только на услуги (работы)", "На любые покупки", "На новую кассу"], correct: 1, block: 12 },
+            { question: "Можно ли использовать сертификат за отзыв на покупку запчастей?", answers: ["Да, на любые запчасти", "Да, но без суммы закупа", "Нет, сертификат только на услуги", "Да, если сумма больше 1000₽"], correct: 2, block: 12 },
+            { question: "Какая скидка предоставляется клиенту по договору обслуживания кассы?", answers: ["30% на все услуги", "50% на услугу", "Бесплатные работы", "20% на запчасти"], correct: 1, block: 12 },
+            { question: "Клиент с договором обслуживания кассы. Какую скидку он получает?", answers: ["20% на всё", "30% на работы", "50% на услугу", "Бесплатное обслуживание"], correct: 2, block: 12 },
+
+            // БЛОК 14: Эквайринг (3 вопроса)
+            { question: "Кто отвечает за настройку и обслуживание внешнего эквайринга?", answers: ["Наш сервисный центр", "Только банк-эквайер", "Производитель кассы", "Менеджер клиента"], correct: 1, block: 13 },
+            { question: "Клиент просит настроить терминал эквайринга. Что ответить?", answers: ["\"Да, сделаем\"", "\"Это платная услуга\"", "\"Обратитесь в банк-эквайер, это их зона ответственности\"", "\"Нужно привезти терминал к нам\""], correct: 2, block: 13 },
+            { question: "У клиента не работает терминал оплаты картой. Кто решает проблему?", answers: ["Мы, как сервис", "Производитель терминала", "Банк-эквайер", "Любой ИТ-специалист"], correct: 2, block: 13 },
+
+            // БЛОК 15: Счета и запчасти (12 вопросов)
+            { question: "Что нужно обязательно указать в счёте на сумму менее 2500₽?", answers: ["Ничего особенного", "Причину в комментарии", "Подпись руководителя", "Дату следующего ремонта"], correct: 1, block: 14 },
+            { question: "Формируете счёт на 2000₽. Что обязательно добавить?", answers: ["Фото оборудования", "Причину в комментарии к счёту", "Подпись клиента", "Ничего дополнительно"], correct: 1, block: 14 },
+            { question: "Что нужно обязательно делать при формировании счёта с запчастью?", answers: ["Позвонить поставщику", "Установить статус в счете \"Резервировать\"", "Согласовать с руководителем", "Проверить наличие у конкурентов"], correct: 1, block: 14 },
+            { question: "Создаёте счёт с запчастью. Какая галочка обязательна?", answers: ["\"Отгрузка\"", "\"Согласовано\"", "\"Резервировать\"", "\"Оплачено\""], correct: 2, block: 14 },
+            { question: "В течение какого времени нужно внести позиции из документа о приходе запчастей в 1С?", answers: ["1 час", "24 часа", "48 часов", "1 неделя"], correct: 1, block: 14 },
+            { question: "Приехали запчасти. За какое время нужно внести их в 1С?", answers: ["Сразу же, в течение часа", "В течение 24 часов", "В течение 3 дней", "В конце недели"], correct: 1, block: 14 },
+            { question: "Какие отделы указываются при создании контрагента филиала в 1С КА? (Отдел 0, Отдел 1, Отдел 2)", answers: ["Сервис, Филиал, Сервис", "Филиал, Сервис, Филиал", "Филиал, Филиал, Сервис", "Все одинаковые"], correct: 1, block: 14 },
+            { question: "При создании контрагента в 1С КА: Отдел 0 — это:", answers: ["Сервис", "Филиал", "Склад", "Бухгалтерия"], correct: 1, block: 14 },
+            { question: "Какой формат комментария в расходном ордере при покупке запчасти?", answers: ["Просто название запчасти", "!!!ПРИХОД!!! [Запчасть] для [Устройство] для [Номер заявки]", "Номер заявки", "Не требуется комментарий"], correct: 1, block: 14 },
+            { question: "Оформляете расходный ордер на покупку термоголовки для заявки 12345. Как заполнить комментарий?", answers: ["\"Термоголовка\"", "\"Заявка 12345\"", "\"!!!ПРИХОД!!! Термоголовка для принтера чеков для 12345\"", "Комментарий необязателен"], correct: 2, block: 14 },
+            { question: "Где указывать дефекты при приёме оборудования с филиала в АСЦ Краснодар?", answers: ["В полях \"Внешний вид\" и \"Комплектация\"", "В отдельном документе", "В комментарии к заявке", "Не нужно указывать"], correct: 2, block: 14 },
+            { question: "Оборудование поступило с филиала. Куда записать информацию о дефектах?", answers: ["В поле \"Внешний вид\"", "В акт приёма", "В комментарий к заявке", "В отдельный журнал"], correct: 2, block: 14 }
+        ];
+
+        const engineerQuestions = [
+            { question: "Какое напряжение считается безопасным для работы?", answers: ["До 12В", "До 36В", "До 220В", "До 380В"], correct: 1, block: 0 },
+            { question: "Что необходимо сделать перед началом ремонтных работ?", answers: ["Позвонить в офис", "Отключить питание и проверить отсутствие напряжения", "Начать работу", "Подписать акт"], correct: 1, block: 0 },
+            { question: "Какой инструмент используется для измерения сопротивления?", answers: ["Амперметр", "Вольтметр", "Омметр/Мультиметр", "Осциллограф"], correct: 2, block: 0 },
+            { question: "Как часто необходимо проводить профилактическое обслуживание оборудования?", answers: ["Раз в неделю", "Раз в месяц", "Согласно регламенту производителя", "При поломке"], correct: 2, block: 0 },
+            { question: "Что делать при обнаружении неисправности, выходящей за рамки компетенций?", answers: ["Попытаться починить", "Сообщить руководителю", "Игнорировать", "Отложить на потом"], correct: 1, block: 0 },
+            { question: "Какой документ оформляется после завершения работ?", answers: ["Заявка", "Акт выполненных работ", "Договор", "Накладная"], correct: 1, block: 0 },
+            { question: "Что означает класс защиты IP65?", answers: ["Защита от воды", "Защита от пыли", "Полная защита от пыли и струй воды", "Защита от ударов"], correct: 2, block: 0 },
+            { question: "Какой провод используется для заземления?", answers: ["Красный", "Синий", "Жёлто-зелёный", "Чёрный"], correct: 2, block: 0 },
+            { question: "Что нужно проверить в первую очередь при отсутствии питания?", answers: ["Оборудование", "Автоматические выключатели", "Розетки", "Кабели"], correct: 1, block: 0 },
+            { question: "Как правильно хранить измерительные приборы?", answers: ["В любом месте", "В сухом месте в чехле/кейсе", "На рабочем столе", "В кармане"], correct: 1, block: 0 }
+        ];
+
+        let currentUser = {};
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let selectedAnswer = null;
+        let timerInterval = null;
+        let timeLeft = TIMER_DURATION;
+        let testResults = [];
+        let errorQuestions = [];
+        let additionalQuestions = [];
+        let isAdditionalPhase = false;
+
+        const loginScreen = document.getElementById('loginScreen');
+        const testScreen = document.getElementById('testScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+
+        function loadResults() {
+            const saved = localStorage.getItem('attestationResults') || sessionStorage.getItem('attestationResults');
+            if (saved) {
+                testResults = JSON.parse(saved);
+            }
+        }
+
+        function saveResults() {
+            localStorage.setItem('attestationResults', JSON.stringify(testResults));
+            sessionStorage.setItem('attestationResults', JSON.stringify(testResults));
+        }
+
+        loadResults();
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.background = `hsl(${260 + Math.random() * 60}, 70%, 60%)`;
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function getRandomQuestions(questionPool, count) {
+            const blocks = {};
+            questionPool.forEach(q => {
+                if (!blocks[q.block]) blocks[q.block] = [];
+                blocks[q.block].push(q);
+            });
+
+            let selectedQuestions = [];
+            const blockKeys = Object.keys(blocks).map(Number).sort((a, b) => a - b);
+            
+            blockKeys.forEach(blockIdx => {
+                const blockQuestions = blocks[blockIdx];
+                const shuffled = shuffleArray(blockQuestions);
+                const qCount = Math.max(1, Math.floor(count / blockKeys.length));
+                selectedQuestions.push(...shuffled.slice(0, Math.min(qCount, blockQuestions.length)));
+            });
+
+            return shuffleArray(selectedQuestions).slice(0, count);
+        }
+
+        function shuffleAnswers(question) {
+            const answers = [...question.answers];
+            const correctAnswer = answers[question.correct];
+            const shuffledAnswers = shuffleArray(answers);
+            const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+            return { answers: shuffledAnswers, correct: newCorrectIndex };
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            currentUser = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                position: document.getElementById('position').value,
+                startTime: new Date().toISOString()
+            };
+
+            const sourceQuestions = currentUser.position === 'manager' ? managerQuestions : engineerQuestions;
+            questions = getRandomQuestions(sourceQuestions, BASIC_QUESTIONS_COUNT);
+            
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            selectedAnswer = null;
+            errorQuestions = [];
+            additionalQuestions = [];
+            isAdditionalPhase = false;
+
+            document.getElementById('userName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('userPosition').textContent = currentUser.position === 'manager' ? '(Менеджер)' : '(Инженер)';
+            document.getElementById('totalQuestions').textContent = BASIC_QUESTIONS_COUNT;
+
+            loginScreen.classList.add('hidden');
+            testScreen.classList.remove('hidden');
+            
+            showQuestion();
+        });
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            selectedAnswer = null;
+            
+            const { answers, correct } = shuffleAnswers(question);
+            questions[currentQuestionIndex].correct = correct;
+            
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            const totalDisplay = BASIC_QUESTIONS_COUNT + additionalQuestions.length;
+            document.getElementById('totalQuestions').textContent = totalDisplay;
+            document.getElementById('progressBar').style.width = `${((currentQuestionIndex) / totalDisplay) * 100}%`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            if (isAdditionalPhase && currentQuestionIndex === BASIC_QUESTIONS_COUNT) {
+                const notice = document.getElementById('additionalNotice');
+                notice.classList.remove('hidden');
+            } else {
+                document.getElementById('additionalNotice').classList.add('hidden');
+            }
+            
+            answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn w-full p-3 sm:p-4 text-left rounded-lg sm:rounded-xl text-white flex items-center gap-3 sm:gap-4 text-sm sm:text-base';
+                btn.innerHTML = `
+                    <span class="letter-badge w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-purple-300">${String.fromCharCode(65 + index)}</span>
+                    <span class="flex-1">${answer}</span>
+                `;
+                btn.addEventListener('click', () => selectAnswer(btn, index === correct, container, correct));
+                container.appendChild(btn);
+            });
+            
+            document.getElementById('nextBtn').disabled = true;
+            
+            document.getElementById('questionCard').classList.remove('fade-in');
+            setTimeout(() => document.getElementById('questionCard').classList.add('fade-in'), 10);
+            
+            startTimer();
+        }
+
+        function startTimer() {
+            timeLeft = TIMER_DURATION;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 10) {
+                    document.getElementById('timerText').classList.add('timer-warning');
+                    document.getElementById('timerCircle').style.stroke = '#ef4444';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerText = document.getElementById('timerText');
+            const timerCircle = document.getElementById('timerCircle');
+            
+            timerText.textContent = timeLeft;
+            
+            const circumference = 125.6;
+            const offset = circumference - (timeLeft / TIMER_DURATION) * circumference;
+            timerCircle.style.strokeDashoffset = offset;
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            document.getElementById('timerText').classList.remove('timer-warning');
+            document.getElementById('timerCircle').style.stroke = '#06b6d4';
+        }
+
+        function handleTimeout() {
+            if (selectedAnswer !== null) return;
+            
+            selectedAnswer = false;
+            errorQuestions.push(currentQuestionIndex);
+            const container = document.getElementById('answersContainer');
+            const buttons = container.querySelectorAll('button');
+            
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.add('selected');
+                
+                if (idx === questions[currentQuestionIndex].correct) {
+                    btn.classList.add('correct');
+                    btn.querySelector('.letter-badge').classList.add('correct');
+                }
+            });
+            
+            const timeoutMsg = document.createElement('div');
+            timeoutMsg.className = 'mt-4 p-3 rounded-xl bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 text-center font-medium';
+            timeoutMsg.textContent = '⏱️ Время вышло! Ответ не засчитан.';
+            container.appendChild(timeoutMsg);
+            
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function selectAnswer(btn, isCorrect, container, correctIndex) {
+            if (selectedAnswer !== null) return;
+            
+            stopTimer();
+            selectedAnswer = isCorrect;
+            if (isCorrect) correctAnswers++;
+            else errorQuestions.push(currentQuestionIndex);
+            
+            container.querySelectorAll('button').forEach((b, idx) => {
+                b.classList.add('selected');
+                b.disabled = true;
+                
+                if (idx === correctIndex) {
+                    b.classList.add('correct');
+                    b.querySelector('.letter-badge').classList.add('correct');
+                }
+            });
+            
+            if (!isCorrect) {
+                btn.classList.add('incorrect');
+                btn.querySelector('.letter-badge').classList.add('incorrect');
+            }
+            
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            stopTimer();
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex >= questions.length) {
+                if (!isAdditionalPhase && errorQuestions.length > 0) {
+                    prepareAdditionalQuestions();
+                } else {
+                    showResults();
+                }
+            } else {
+                showQuestion();
+            }
+        });
+
+        function prepareAdditionalQuestions() {
+            const sourceQuestions = currentUser.position === 'manager' ? managerQuestions : engineerQuestions;
+            const blocks = {};
+            sourceQuestions.forEach(q => {
+                if (!blocks[q.block]) blocks[q.block] = [];
+                blocks[q.block].push(q);
+            });
+
+            const usedQuestions = new Set();
+            questions.forEach(q => {
+                usedQuestions.add(sourceQuestions.indexOf(q));
+            });
+            
+            errorQuestions.forEach(errorIdx => {
+                const erroredQuestion = questions[errorIdx];
+                const blockQuestions = blocks[erroredQuestion.block] || [];
+                const unusedInBlock = blockQuestions.filter(q => {
+                    const idx = sourceQuestions.indexOf(q);
+                    return !usedQuestions.has(idx);
+                });
+                
+                if (unusedInBlock.length > 0) {
+                    const randomQ = unusedInBlock[Math.floor(Math.random() * unusedInBlock.length)];
+                    additionalQuestions.push(randomQ);
+                    usedQuestions.add(sourceQuestions.indexOf(randomQ));
+                }
+            });
+
+            questions = [...questions, ...additionalQuestions];
+            isAdditionalPhase = true;
+            document.getElementById('totalQuestions').textContent = questions.length;
+            showQuestion();
+        }
+
+        function showResults() {
+            testScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const percentage = Math.round((correctAnswers / BASIC_QUESTIONS_COUNT) * 100);
+            
+            const result = {
+                timestamp: new Date().toISOString(),
+                firstName: currentUser.firstName,
+                lastName: currentUser.lastName,
+                position: currentUser.position,
+                correct: correctAnswers,
+                total: BASIC_QUESTIONS_COUNT,
+                percentage: percentage,
+                errorQuestions: errorQuestions.map(idx => ({ index: idx, question: questions[idx].question })),
+                additionalQuestionsCount: additionalQuestions.length,
+                allQuestions: questions.map((q, idx) => ({
+                    question: q.question,
+                    userAnswerCorrect: idx >= BASIC_QUESTIONS_COUNT || !errorQuestions.includes(idx),
+                    isAdditional: idx >= BASIC_QUESTIONS_COUNT
+                }))
+            };
+            testResults.unshift(result);
+            saveResults();
+            
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('totalCount').textContent = BASIC_QUESTIONS_COUNT;
+            document.getElementById('resultName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            
+            let additionalText = '';
+            if (additionalQuestions.length > 0) {
+                additionalText = `+ ${additionalQuestions.length} дополнительных`;
+                document.getElementById('additionalCountText').textContent = additionalText;
+            } else {
+                document.getElementById('additionalCountText').textContent = '';
+            }
+            
+            const percentageEl = document.getElementById('percentage');
+            const iconEl = document.getElementById('resultIcon');
+            const titleEl = document.getElementById('resultTitle');
+            const resultCard = document.getElementById('resultCard');
+            
+            percentageEl.textContent = `${percentage}%`;
+            
+            resultCard.classList.remove('result-success', 'result-warning', 'result-error');
+            iconEl.className = 'w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6';
+            
+            if (percentage >= 80) {
+                percentageEl.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
+                percentageEl.style.webkitBackgroundClip = 'text';
+                percentageEl.style.webkitTextFillColor = 'transparent';
+                iconEl.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
+                iconEl.style.boxShadow = '0 10px 40px rgba(16, 185, 129, 0.4)';
+                resultCard.classList.add('result-success');
+                iconEl.innerHTML = '<svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                titleEl.textContent = 'Отлично!';
+            } else if (percentage >= 60) {
+                percentageEl.style.background = 'linear-gradient(135deg, #f59e0b, #ec4899)';
+                percentageEl.style.webkitBackgroundClip = 'text';
+                percentageEl.style.webkitTextFillColor = 'transparent';
+                iconEl.style.background = 'linear-gradient(135deg, #f59e0b, #ec4899)';
+                iconEl.style.boxShadow = '0 10px 40px rgba(245, 158, 11, 0.4)';
+                resultCard.classList.add('result-warning');
+                iconEl.innerHTML = '<svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                titleEl.textContent = 'Хороший результат';
+            } else {
+                percentageEl.style.background = 'linear-gradient(135deg, #ef4444, #ec4899)';
+                percentageEl.style.webkitBackgroundClip = 'text';
+                percentageEl.style.webkitTextFillColor = 'transparent';
+                iconEl.style.background = 'linear-gradient(135deg, #ef4444, #ec4899)';
+                iconEl.style.boxShadow = '0 10px 40px rgba(239, 68, 68, 0.4)';
+                resultCard.classList.add('result-error');
+                iconEl.innerHTML = '<svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                titleEl.textContent = 'Требуется повторение';
+            }
+        }
+
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            resultScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            loginForm.reset();
+        });
+
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+            document.getElementById('adminLoginModal').classList.add('flex');
+        });
+
+        document.getElementById('cancelAdminBtn').addEventListener('click', () => {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+            document.getElementById('adminLoginModal').classList.remove('flex');
+            document.getElementById('adminPassword').value = '';
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('adminLoginModal').classList.add('hidden');
+                document.getElementById('adminLoginModal').classList.remove('flex');
+                document.getElementById('adminPassword').value = '';
+                showAdminPanel();
+            } else {
+                alert('Неверный пароль!');
+            }
+        });
+
+        document.getElementById('closeAdminBtn').addEventListener('click', () => {
+            adminPanel.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+        });
+
+        function showAdminPanel() {
+            loginScreen.classList.add('hidden');
+            testScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            adminPanel.classList.remove('hidden');
+            
+            updateAdminStats();
+        }
+
+        function updateAdminStats() {
+            const totalTests = testResults.length;
+            document.getElementById('totalTests').textContent = totalTests;
+            
+            if (totalTests > 0) {
+                const avgScore = Math.round(testResults.reduce((sum, r) => sum + r.percentage, 0) / totalTests);
+                document.getElementById('avgScore').textContent = avgScore + '%';
+                
+                const successCount = testResults.filter(r => r.percentage >= 80).length;
+                const successRate = Math.round((successCount / totalTests) * 100);
+                document.getElementById('successRate').textContent = successRate + '%';
+                
+                const tbody = document.getElementById('resultsTableBody');
+                tbody.innerHTML = '';
+                
+                testResults.forEach(result => {
+                    const date = new Date(result.timestamp);
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-white/5 hover:bg-white/5 transition-colors';
+                    
+                    let statusBadge = '';
+                    if (result.percentage >= 80) {
+                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/50">Отлично</span>';
+                    } else if (result.percentage >= 60) {
+                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-400 border border-yellow-500/50">Хорошо</span>';
+                    } else {
+                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/50">Не сдал</span>';
+                    }
+                    
+                    let resultText = `${result.correct}/15`;
+                    if (result.additionalQuestionsCount > 0) {
+                        resultText += ` +${result.additionalQuestionsCount}`;
+                    }
+                    
+                    tr.innerHTML = `
+                        <td class="py-3 px-2 text-gray-300 text-sm">${date.toLocaleString('ru-RU')}</td>
+                        <td class="py-3 px-2 text-white font-medium">${result.firstName} ${result.lastName}</td>
+                        <td class="py-3 px-2 text-gray-300 hidden sm:table-cell">${result.position === 'manager' ? 'Менеджер' : 'Инженер'}</td>
+                        <td class="py-3 px-2 text-center text-white font-medium">${resultText}</td>
+                        <td class="py-3 px-2 text-center">
+                            <span class="text-lg font-bold ${result.percentage >= 80 ? 'text-emerald-400' : result.percentage >= 60 ? 'text-yellow-400' : 'text-red-400'}">
+                                ${result.percentage}%
+                            </span>
+                        </td>
+                        <td class="py-3 px-2 text-center">${statusBadge}</td>
+                        <td class="py-3 px-2 text-center">
+                            <button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-300 hover:bg-purple-500/40 transition-all details-btn">Просмотр</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                    
+                    tr.querySelector('.details-btn').addEventListener('click', () => showDetails(result));
+                });
+            } else {
+                document.getElementById('avgScore').textContent = '0%';
+                document.getElementById('successRate').textContent = '0%';
+            }
+        }
+
+        function showDetails(result) {
+            const modal = document.getElementById('detailsModal');
+            const content = document.getElementById('detailsContent');
+            
+            let html = `
+                <div class="mb-4">
+                    <h3 class="text-lg font-bold text-white mb-2">${result.firstName} ${result.lastName}</h3>
+                    <p class="text-gray-400 text-sm mb-4">${result.position === 'manager' ? 'Менеджер' : 'Инженер'} | ${result.correct}/15 правильных (${result.percentage}%)</p>
+                </div>
+            `;
+            
+            if (result.errorQuestions && result.errorQuestions.length > 0) {
+                html += `
+                    <div class="error-summary mb-4">
+                        <div class="font-semibold mb-2">❌ Ошибки на вопросах:</div>
+                        <ul>
+                            ${result.errorQuestions.map((q, idx) => `<li>Вопрос ${idx + 1}: "${q.question.substring(0, 50)}..."</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            if (result.additionalQuestionsCount > 0) {
+                html += `
+                    <div class="mb-4 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30 text-yellow-300">
+                        <span class="font-semibold">📝 Дополнительные вопросы:</span> ${result.additionalQuestionsCount} шт.
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        document.getElementById('closeDetailsBtn').addEventListener('click', () => {
+            const modal = document.getElementById('detailsModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        });
+    </script>
+</body>
+</html>
